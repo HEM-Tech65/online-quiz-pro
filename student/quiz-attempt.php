@@ -11,13 +11,11 @@ if (!$auth->isLoggedIn() || !$auth->isStudent()) {
 $quiz_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $student_id = $_SESSION['user_id'];
 
-// Check if quiz exists and is available
+// Check if quiz exists (remove date checks for submission)
 $quiz = $db->query("SELECT q.*, s.name as subject_name 
                    FROM quizzes q
                    JOIN subjects s ON q.subject_id = s.id
-                   WHERE q.id = $quiz_id AND q.is_published = 1
-                   AND (q.start_date IS NULL OR q.start_date <= NOW())
-                   AND (q.end_date IS NULL OR q.end_date >= NOW())")->fetch_assoc();
+                   WHERE q.id = $quiz_id AND q.is_published = 1")->fetch_assoc();
 
 if (!$quiz) {
     $_SESSION['error_message'] = "Quiz not available";
@@ -27,7 +25,8 @@ if (!$quiz) {
 
 // Check if student has attempts left
 $attempts = $db->query("SELECT COUNT(*) as count FROM quiz_attempts 
-                       WHERE user_id = $student_id AND quiz_id = $quiz_id")->fetch_assoc()['count'];
+                       WHERE user_id = $student_id AND quiz_id = $quiz_id
+                       AND status = 'completed'")->fetch_assoc()['count'];
 
 if ($attempts >= $quiz['max_attempts']) {
     $_SESSION['error_message'] = "You have exhausted your attempts for this quiz";
@@ -53,85 +52,75 @@ $questions = $db->query("SELECT * FROM questions WHERE quiz_id = $quiz_id ORDER 
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Process answers and calculate score
-    $score = 0;
-    $total_questions = $questions->num_rows;
+    // Start transaction
+    $db->query("START TRANSACTION");
     
-    // Reset pointer for questions
-    $questions->data_seek(0);
-    
-    while ($question = $questions->fetch_assoc()) {
-        $question_id = $question['id'];
-        $is_correct = false;
-        $marks_obtained = 0;
+    try {
+        $score = 0;
+        $total_marks = 0;
+        $correct_answers = 0;
         
-        if ($question['type'] == 'mcq' || $question['type'] == 'true_false') {
-            $selected_option = $_POST['answers'][$question_id] ?? null;
+        // Reset pointer for questions
+        $questions->data_seek(0);
+        
+        while ($question = $questions->fetch_assoc()) {
+            $question_id = $question['id'];
+            $total_marks += $question['marks'];
+            $is_correct = false;
+            $student_answer = $_POST['answers'][$question_id] ?? '';
             
-            if ($selected_option) {
-                $correct_option = $db->query("SELECT id FROM options 
-                                            WHERE question_id = $question_id 
-                                            AND is_correct = 1")->fetch_assoc();
-                
-                $is_correct = ($selected_option == $correct_option['id']);
-                $marks_obtained = $is_correct ? $question['marks'] : 0;
-                $score += $marks_obtained;
+            if ($question['type'] == 'mcq') {
+                $is_correct = (strtoupper($student_answer) == strtoupper($question['correct_option']));
+            } 
+            elseif ($question['type'] == 'short_answer') {
+                $is_correct = (strcasecmp(trim($student_answer), trim($question['correct_option'])) == 0);
             }
+            
+            if ($is_correct) {
+                $correct_answers++;
+                $score += $question['marks'];
+            }
+            
+            $db->query("INSERT INTO answers (attempt_id, question_id, answer_text, is_correct, marks_obtained)
+                       VALUES ($attempt_id, $question_id, 
+                              '" . $db->escapeString($student_answer) . "',
+                              " . ($is_correct ? 1 : 0) . ", 
+                              " . ($is_correct ? $question['marks'] : 0) . ")");
         }
         
-        // For short answer questions, manual grading would be needed
-        // This is a simplified version that gives partial marks
-        elseif ($question['type'] == 'short_answer') {
-            $answer_text = $_POST['answers'][$question_id] ?? '';
-            $marks_obtained = !empty($answer_text) ? ($question['marks'] * 0.5) : 0;
-            $score += $marks_obtained;
-            $is_correct = false; // Needs manual grading
+        $percentage_score = $total_marks > 0 ? round(($score / $total_marks) * 100, 2) : 0;
+        
+        // Forcefully update status to completed
+        $update_result = $db->query("UPDATE quiz_attempts 
+                                   SET status = 'completed', 
+                                       score = $percentage_score, 
+                                       completed_at = NOW() 
+                                   WHERE id = $attempt_id");
+        
+        if (!$update_result) {
+            throw new Exception("Status update failed: " . $db->getConnection()->error);
         }
         
-        // Save answer
-        $answer_data = [
-            'attempt_id' => $attempt_id,
-            'question_id' => $question_id,
-            'is_correct' => $is_correct,
-            'marks_obtained' => $marks_obtained
-        ];
+        $db->query("COMMIT");
         
-        if ($question['type'] == 'mcq' || $question['type'] == 'true_false') {
-            $answer_data['option_id'] = null; // Not used
-            $answer_data['answer_text'] = $_POST['answers'][$question_id] ?? '';
-        } else {
-            $answer_data['option_id'] = null;
-            $answer_data['answer_text'] = $_POST['answers'][$question_id] ?? '';
-        }
-
-        // Insert answer into database
-        $db->query("INSERT INTO answers (attempt_id, question_id, option_id, answer_text, is_correct, marks_obtained)
-                   VALUES ({$answer_data['attempt_id']}, {$answer_data['question_id']}, 
-                           NULL, 
-                           '" . $db->escapeString($answer_data['answer_text'] ?? '') . "',
-                           {$answer_data['is_correct']}, 
-                           {$answer_data['marks_obtained']})");
+        $_SESSION['quiz_score'] = $percentage_score;
+        header("Location: quiz-result.php?attempt_id=$attempt_id");
+        exit();
+        
+    } catch (Exception $e) {
+        $db->query("ROLLBACK");
+        error_log("Quiz submission error: " . $e->getMessage());
+        $_SESSION['error_message'] = "Error submitting quiz. Please contact support.";
+        header("Location: quiz-attempt.php?id=$quiz_id");
+        exit();
     }
-    
-    // Calculate percentage score
-    $total_marks = $db->query("SELECT SUM(marks) as total FROM questions WHERE quiz_id = $quiz_id")->fetch_assoc()['total'];
-    $percentage_score = round(($score / $total_marks) * 100, 2);
-    
-    // Update attempt
-    $db->query("UPDATE quiz_attempts 
-               SET status = 'completed', 
-                   score = $percentage_score, 
-                   completed_at = NOW() 
-               WHERE id = $attempt_id");
-    
-    $_SESSION['quiz_score'] = $percentage_score;
-    header("Location: quiz-result.php?attempt_id=$attempt_id");
-    exit();
 }
 
 include '../includes/header.php';
 ?>
 
+<!-- Rest of your HTML remains unchanged -->
+ 
 <div class="container quiz-container">
     <div class="quiz-header bg-light p-3 mb-4 rounded">
         <div class="d-flex justify-content-between align-items-center">

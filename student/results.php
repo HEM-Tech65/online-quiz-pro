@@ -11,17 +11,26 @@ if (!$auth->isLoggedIn() || !$auth->isStudent()) {
 $page_title = "My Results";
 $student_id = $_SESSION['user_id'];
 
-// Get all quiz attempts
+// Get all completed attempts regardless of quiz dates
 $attempts = $db->query("SELECT qa.*, q.title as quiz_title, s.name as subject_name
                        FROM quiz_attempts qa
                        JOIN quizzes q ON qa.quiz_id = q.id
                        JOIN subjects s ON q.subject_id = s.id
                        WHERE qa.user_id = $student_id
+                       AND qa.status = 'completed'
                        ORDER BY qa.started_at DESC");
+
+// Cleanup any stuck attempts (safety measure)
+$db->query("UPDATE quiz_attempts 
+           SET status = 'completed' 
+           WHERE user_id = $student_id 
+           AND status = 'in_progress'
+           AND completed_at IS NOT NULL");
 
 include '../includes/header.php';
 ?>
 
+<!-- Rest of your HTML remains unchanged -->
 <div class="container-fluid">
     <div class="row">
         <?php include 'sidebar.php'; ?>

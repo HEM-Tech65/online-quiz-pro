@@ -31,12 +31,12 @@ include 'includes/header.php';
 ?>
 
 <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
-        <div class="card shadow-sm">
+    <div class="col-md-8 col-lg-6 animate-on-scroll">
+        <div class="card shadow-sm animate-on-scroll delay-1">
             <div class="card-body p-4 p-md-5">
                 <div class="text-center mb-4">
                     <h2 class="fw-bold">Create Your Account</h2>
-                    <p class="text-muted">Join our online quiz system</p>
+                    <p class="text-muted">Join our Online Quiz System</p>
                 </div>
                 
                 <?php if (!empty($errors)): ?>

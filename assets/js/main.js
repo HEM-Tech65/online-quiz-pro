@@ -30,3 +30,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize animations
+    initAnimations();
+    
+    // Add hover effects to all buttons with btn class
+    document.querySelectorAll('.btn').forEach(button => {
+        button.classList.add('btn-hover-effect');
+    });
+});
+
+function initAnimations() {
+    // Add page transition class to body
+    document.body.classList.add('page-transition');
+    
+    // Animate on scroll elements
+    const animateElements = document.querySelectorAll('.animate-on-scroll');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+    
+    animateElements.forEach(element => {
+        observer.observe(element);
+    });
+    
+    // Add animation to alerts
+    document.querySelectorAll('.alert').forEach(alert => {
+        alert.classList.add('animate__animated', 'animate__fadeIn');
+    });
+}

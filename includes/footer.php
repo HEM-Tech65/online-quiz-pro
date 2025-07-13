@@ -4,7 +4,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h5>Online Quiz Pro</h5>
+                <img src="assets/images/logoc.png" alt="gctu logo" class="img-fluid mb-3 justify-content-center" style="width: 80px; height: 80px;">
+                <h5>GCTU Online Quiz Pro</h5>
                 <p class="">A professional quiz management system for educational institutions.</p>
             </div>
             <div class="col-md-3">
@@ -18,14 +19,14 @@
             <div class="col-md-3">
                 <h5>Contact</h5>
                 <ul class="list-unstyled">
-                    <li><i class="fas fa-envelope me-2"></i> support@quizpro.edu</li>
+                    <li><i class="fas fa-envelope me-2"></i> support@gctuquizpro.edu</li>
                     <li><i class="fas fa-phone me-2"></i> +233 123 456 789</li>
                 </ul>
             </div>
         </div>
         <hr>
         <div class="text-center">
-            <small>&copy; <?php echo date('Y'); ?> Online Quiz Pro. All rights reserved.</small>
+            <small>&copy; <?php echo date('Y'); ?> GCTU Online Quiz Pro. All rights reserved.</small>
         </div>
     </div>
 </footer>

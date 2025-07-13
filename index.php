@@ -29,8 +29,9 @@ include 'includes/header.php';
 
 
 <div class="hero-section text-white py-5 animate-on-scroll">
-    <div class="container text-center py-5">
-        <h1 class="display-4 fw-bold mb-4">Welcome to Online Quiz Pro</h1>
+    <div class="container text-center py-3">
+        <img src="assets/images/logoc.png" alt="gctu logo" class="img-fluid mb-3 justify-content-center" style="width: 120px; height: 120px;">
+        <h1 class="display-4 fw-bold mb-4">Welcome to GCTU Online Quiz Pro</h1>
         <p class="lead mb-5">A professional platform for creating and taking quizzes online</p>
         <div class="d-flex justify-content-center gap-3">
             <a href="register.php" class="btn btn-light btn-lg px-4">Register Now</a>

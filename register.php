@@ -43,6 +43,7 @@ include 'includes/header.php';
         <div class="card shadow-sm animate-on-scroll delay-1">
             <div class="card-body p-4 p-md-5">
                 <div class="text-center mb-4">
+                    <img src="assets/images/logo2.png" alt="gctu logo" class="img-fluid mb-3 justify-content-center" style="width: 500px; height: 90px;">
                     <h2 class="fw-bold">Create Your Account</h2>
                     <p class="text-muted">Join our Online Quiz System</p>
                 </div>

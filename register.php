@@ -29,6 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 include 'includes/header.php';
 ?>
+<style>
+    body {
+        background-image: url('assets/images/reg.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6 animate-on-scroll">

@@ -1,7 +1,9 @@
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    background: linear-gradient(135deg, rgba(18, 44, 175, 0.7) 0%, rgba(11, 59, 215, 0.7) 100%);
+    /*background: rgba(102, 118, 142, 0.5);*/
     margin-bottom: 3rem;
+    border-radius: 25px;
 }
 
 /* Icon Circles */

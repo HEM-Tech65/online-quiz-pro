@@ -1,9 +1,15 @@
 /* General Styles */
 body {
-    background-image: url(assets/images/quiz1.jpg);
+    
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
     color: #212529;
+}
+
+.navbar {
+    background-color: #1b35c7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
 }
 
 a {
@@ -159,4 +165,11 @@ a {
 
 .btn-hover-effect:hover:after {
     transform: translateX(100%) skewX(-15deg);
+}
+
+.hero-section1 {
+    background: linear-gradient(135deg, rgba(18, 44, 175, 0.7) 0%, rgba(11, 59, 215, 0.7) 100%);
+    padding: 20px 0;
+    text-align: center;
+    color: #fefdfd !important;
 }

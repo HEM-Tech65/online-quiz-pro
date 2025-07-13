@@ -16,10 +16,19 @@ include 'includes/header.php';
 ?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="/assets/css/custom.css">
+<style>
+    body {
+        background-image: url('assets/images/view4.JPG');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        
+    }
+</style>
 
 
-
-<div class="hero-section bg-primary text-white py-5 animate-on-scroll">
+<div class="hero-section text-white py-5 animate-on-scroll">
     <div class="container text-center py-5">
         <h1 class="display-4 fw-bold mb-4">Welcome to Online Quiz Pro</h1>
         <p class="lead mb-5">A professional platform for creating and taking quizzes online</p>
@@ -38,7 +47,7 @@ include 'includes/header.php';
                     <div class="icon-circle bg-light-primary text-primary mb-3 mx-auto">
                         <i class="fas fa-chalkboard-teacher fa-2x"></i>
                     </div>
-                    <h3>For Lecturers</h3>
+                    <h3 class="fw-bold mb-4">For Lecturers</h3>
                     <p class="text-muted">Create and manage quizzes, track student progress, and analyze results.</p>
                 </div>
             </div>

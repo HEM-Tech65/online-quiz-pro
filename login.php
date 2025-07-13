@@ -26,6 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 include 'includes/header.php';
 ?>
+<style>
+    body {
+        background-image: url('assets/images/login.png');
+        background-size: cover;
+        background-position: center;
+        color: black;
+        border-radius: 20px;
+    }
+
+</style>
 
 <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5 animate-on-scroll">
@@ -33,7 +43,7 @@ include 'includes/header.php';
             <div class="card-body p-5">
                 <div class="text-center mb-4">
                     <h2 class="fw-bold">Welcome Back</h2>
-                    <p class="text-muted">Please login to your account</p>
+                    <p class="">Please login to your account</p>
                 </div>
                 
                 <form method="POST" autocomplete="off">
@@ -66,7 +76,7 @@ include 'includes/header.php';
                     </button>
                     
                     <div class="text-center">
-                        <p class="text-muted">Don't have an account? <a href="register.php" class="text-decoration-none">Register here</a></p>
+                        <p class="">Don't have an account? <a href="register.php" class="text-decoration-none">Register here</a></p>
                     </div>
                 </form>
             </div>

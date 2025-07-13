@@ -21,6 +21,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <!-- Favicon -->
     <link rel="icon" href="<?php echo BASE_URL; ?>/assets/images/favicon.ico">
@@ -31,7 +32,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="<?php echo BASE_URL; ?>">
                 <i class="fas fa-graduation-cap me-2"></i>Online Quiz Pro

@@ -40,6 +40,15 @@ $recent_attempts = $db->query("SELECT qa.*, q.title as quiz_title, u.first_name,
 include '../includes/header.php';
 ?>
 
+<!--<style>
+    body {
+        background-image: url('../assets/images/logo.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        width: auto;
+    }
+</style>-->
+
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->

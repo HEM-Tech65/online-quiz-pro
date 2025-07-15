@@ -46,6 +46,14 @@ $quizzes = $db->query("SELECT q.*, s.name as subject_name
 
 include '../includes/header.php';
 ?>
+<style>
+    body {
+        background-image: url('../assets/images/lec.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
 
 <div class="container-fluid">
     <div class="row">

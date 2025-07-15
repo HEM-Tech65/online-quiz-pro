@@ -40,14 +40,14 @@ $recent_attempts = $db->query("SELECT qa.*, q.title as quiz_title, u.first_name,
 include '../includes/header.php';
 ?>
 
-<!--<style>
+<style>
     body {
-        background-image: url('../assets/images/logo.png');
+        background-image: url('../assets/images/lec.png');
         background-repeat: no-repeat;
         background-position: center;
-        width: auto;
+        background-size: cover;
     }
-</style>-->
+</style>
 
 <div class="container-fluid">
     <div class="row">
@@ -266,5 +266,5 @@ include '../includes/header.php';
 </div>
 
 <?php
-include '../includes/footer.php';
+  include '../includes/footer.php';
 ?>

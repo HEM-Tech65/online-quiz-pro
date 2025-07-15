@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <img src="assets/images/logoc.png" alt="gctu logo" class="img-fluid mb-3 justify-content-center" style="width: 80px; height: 80px;">
+                <img src="assets/images/logoc.png" alt="gctu logoc" class="img-fluid mb-3 justify-content-center" style="width: 80px; height: 80px;">
                 <h5>GCTU Online Quiz Pro</h5>
                 <p class="">A professional quiz management system for educational institutions.</p>
             </div>
